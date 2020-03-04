@@ -1,8 +1,13 @@
+def general_converter(how_much,lookup,dictionary,conversion_factor):
+    if unit in dictionary:
+        mult_by = unit_central.get(unit)
+        how_much = how_much * mult_by
+    return how_much
 def unit_checker():
   unit_tocheck=input("Unit? ")
   teaspoon=["tsp","teaspoon","t"]
   tablespoon=["tbs","tablespoon","T","tbsp"]
-  ounces=["ounce","oz","ounces"]
+  ounces=["ounce","oz","ounces","Oz"]
   pounds=["lb","pound","pounds"]
   quarts=["qt.","qt","gal","quarts","gallon","gallons"]
   cups=["c.","c","cups"]
@@ -48,6 +53,8 @@ while keep_going=="":
     amount= float(amount)
     unit = unit_checker()
 
+    amount = general_converter(amount, unit, unit_central, 1)
+    print(amount)
     if unit in unit_central:
         mult_by=unit_central.get(unit)
         amount=amount*mult_by
