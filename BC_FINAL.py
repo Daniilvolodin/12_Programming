@@ -58,7 +58,7 @@ while item.lower() != "xxx":
         # loop responsible for sorting the items in both lists (name,cost)
         for i in expenses:
 
-            print("{}: ${:.2f}".format(i[0], i[1]))
+            print("{}: ${:.2f} *#items: {}".format(i[0], i[1], i[2]))
         print()
         # sorts the list in alphabetical order A-Z
         expenses.sort(key=lambda x: x[0])
@@ -66,7 +66,7 @@ while item.lower() != "xxx":
         print("***<Alphabetical Order>***")
         # loop responsible for sorting the items in both lists (name,cost)
         for v in expenses:
-            print("{}: ${:.2f}".format(v[0], v[1]))
+            print("{}: ${:.2f} *#items: {}".format(v[0], v[1], v[2]))
         print()
 
         # prints out the name and cost of each item + fixed costs.
@@ -85,6 +85,7 @@ while item.lower() != "xxx":
 
     # Asks user how many items he likes to buy
     num_of_items = int_err("How many {} ('s) would you like to buy?".format(item))
+    item_cost.append(num_of_items)
     stocks += num_of_items
 
     # Asks user the cost for each item
@@ -93,6 +94,10 @@ while item.lower() != "xxx":
     item_cost.append(cost)
     total = total+cost
     expenses.append(item_cost)
+
+
+
+
 
 
 
