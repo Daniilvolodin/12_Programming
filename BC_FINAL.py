@@ -1,99 +1,152 @@
-# Function that checks if input is a number
-def check_err(question):
-    ero = "Enter a valid number"
+# Function that checks if input is an integer with/out decimal places
+def check_float(question):
+    error = "Invalid Input"
     valid = False
     while not valid:
         try:
             response = float(input(question))
             return response
         except ValueError:
-            print(ero)
-# Function checks if input is a whole number
+            print(error)
 
-def int_err(question):
-    ero = "Enter a valid number"
+# Function that checks if an input is not blank
+def not_blank(question):
+    blank = "The Name Cannot Be Blank"
+    valid = False
+    while not valid:
+        response = input(question)
+        if response == "":
+            print(blank)
+        else:
+            return response
+
+# Function that checks if an input is an integer
+def check_int(question):
+    error = "Invalid Input"
     valid = False
     while not valid:
         try:
             response = int(input(question))
             return response
         except ValueError:
-            print(ero)
-# Lists that take in information about items and its cost
-item_cost = []
+            print(error)
+
+# Function that checks if an input is either % or $ symbol
+def symballs(question):
+    error = "Invalid"
+    valid = False
+    while not valid:
+        response = input(question)
+        if response == "$" or response == "%":
+            return response
+
+        else:
+            print(error)
+
+# List that add Items name and cost
 expenses = []
-# The variables that will sum up the total and number of stocks
-stocks = 0
+# List   that add Service's name and cost
+serv_expense = []
+# Variable list
+raise_amount = 0
+mult_item = 0
 total = 0
+fixed_cost = 0
+stock = 0
+overall = 0
 
-# section that acts as an external loop
-item = ""
-while item.lower() != "xxx":
-    item_cost = []
-    item = input("Item Name: ")
-    # if the name is blank return input
-    if item.lower() == "":
-        print("No blanks")
-        continue
+# Question that asks for user to enter item stock he wants to buy
+item_2_buy = check_int("How Many Items Do You Want To Buy?")
+stock += item_2_buy
 
-    item_cost.append(item)
-    # if exit code is entered, perform procedures below;
-    if item.lower() == "xxx":
-        # asks what the preferred cost for advert will be
-        advert = check_err("\nPreferred Cost For Advertising")
-        total += advert
-        # asks what the preferred cost for stall will be
-        stall_hire = check_err("Preferred Stall Hire Cost")
-        total += stall_hire
-        # asks Profit that user expects to get from sales
-        profit = check_err("Expected Profit: %")
-        # calculates profit
-        profit = profit/100
-        sales = total * profit + total
-        average = total/stocks
-        # sorts the list in numerical order from most expensive to least expensive items
-        expenses.sort(key=lambda x: x[1], reverse=True)
+# Loop
+end = ""
+while end == "":
 
-        print("\n***<Numerical Order (From Highest to Lowest)>***")
-        # loop responsible for sorting the items in both lists (name,cost)
+    items_cost = []
+    # Ask for Item Name
+    name = not_blank("\n** Item Name:")
+    # Add item name to list
+    items_cost.append(name)
+    # If user entered entered "xxx" do:
+    if name.lower() == "xxx":
+        # Ask for additional fees
+        add_fee = input("Additional Fees? Type y/yes to add them")
+        if add_fee == "":
+            continue
+        # If user has additional fees then..
+        if add_fee.lower() == "y" or add_fee == "yes":
+            # loop until user enters exit code
+            fee_name = ""
+            while fee_name.lower() != "xxx":
+                services = []
+                # Ask for Service Name
+                fee_name = not_blank("\nService Name:")
+
+                services.append(fee_name)
+                if fee_name.lower() != "xxx":
+                    # Ask for Service cost
+                    fee_cost = check_float("Service Cost: $")
+                    overall += fee_cost
+                    fixed_cost += fee_cost
+                    services.append(fee_cost)
+                    serv_expense.append(services)
+
+        # Ask user how he likes to enter his profit..
+        profits = symballs("Profit Preference: % - Percentages / $ - Dollars")
+        # If user entered % symbol then ask how much profit he wants to make
+        if profits == "%":
+            opt1 = check_float("Profit: %")
+            profit_final = overall * opt1 / 100 + overall
+        # If user entered $ symbol then ask how much profit he wants to make
+        elif profits == "$":
+            opt2 = check_float("Profit: $")
+            profit_final = opt2 + overall
+
+        print("\n** Item Name/s & Cost/s **\n")
+        # Print Item Table in Alphabetical Order
+        print("**Alphabetical Order**")
         for i in expenses:
-
-            print("{}: ${:.2f} *#items: {}".format(i[0], i[1], i[2]))
+            expenses.sort(key=lambda x: x[0])
+            print("{}: ${:.2f}".format(i[0], i[1]))
         print()
-        # sorts the list in alphabetical order A-Z
-        expenses.sort(key=lambda x: x[0])
 
-        print("***<Alphabetical Order>***")
-        # loop responsible for sorting the items in both lists (name,cost)
+        print("**Numerical Order Higher to Lowest**")
+        # constantly add items to total
+        for x in expenses:
+            mult_item += x[1]
+        # Print Item Table in Numerical Order from Highest to Lowest
         for v in expenses:
-            print("{}: ${:.2f} *#items: {}".format(v[0], v[1], v[2]))
+            expenses.sort(key=lambda x: x[1], reverse=True)
+            print("{}: ${:.2f}".format(v[0], v[1]))
         print()
+        print("** FIXED COST **")
+        # Print Service Table that lists its name and cost
+        for x in serv_expense:
+            print("{}: ${}".format(x[0], x[1]))
+        print()
+        print("*** TOTAL ***")
+        print("Total: ${}\n".format(mult_item))
 
-        # prints out the name and cost of each item + fixed costs.
-        print("*** Fixed Cost ***")
-        print("Advertising: ${:.2f}\nStall Hire: ${:.2f}".format(advert, stall_hire))
-        print("\n *** Total: ${:.2f}***".format(total))
+        print("*** OVERALL COST ***")
 
-        print("\nExpected Profit: %{}".format(profit*100))
+        print("Overall: ${}\n".format(overall))
 
-        # prints out how many sales needed to reach the desired profit percentage
-        print("Sales Needed: ${:.2f}".format(sales))
+        print("*** Sales Needed ***")
+        print("${:.2f} Worth Of Sales Needed To Reach The Profit Goal".format(profit_final))
+        # Calculate average price per item
+        average = profit_final / mult_item * total
 
-        # Cost for each item after the fixed costs have been applied + the % of profit
-        print("${:.2f} per item".format(average))
+        print("Price Per Item: ${:.2f}".format(average))
+
         break
-
-    # Asks user how many items he likes to buy
-    num_of_items = int_err("How many {} ('s) would you like to buy?".format(item))
-    item_cost.append(num_of_items)
-    stocks += num_of_items
-
-    # Asks user the cost for each item
-    cost = check_err("Item: $")
-    cost = cost*num_of_items
-    item_cost.append(cost)
-    total = total+cost
-    expenses.append(item_cost)
+    # Ask user how much an Item costs
+    cost = check_float("** Item Cost: $")
+    total += cost
+    cost = cost * stock
+    items_cost.append(cost)
+    expenses.append(items_cost)
+    overall += cost
 
 
 
